@@ -6,12 +6,18 @@ from datetime import date
 import os
 from dotenv import load_dotenv
 
-load_dotenv()
+output_bucket= doordash-target-zn-gds-assign-3
+TopicArn = arn:aws:sns:us-east-1:865028845686:s3-notif-doordash-assign-gds-3
 
+load_dotenv()
+s3 = boto3.client('s3')
 def lambda_handler(event, context):
     #code added from CI CD 
     input_bucket = event["Records"][0]["s3"]["bucket"]["name"]
     input_key = event["Records"][0]["s3"]["object"]["key"]
+    print(input_bucket)
+    print(input_key)
+
     s3 = boto3.client('s3')
     obj = s3.get_object(Bucket = input_bucket, Key = input_key)
 
@@ -32,7 +38,7 @@ def lambda_handler(event, context):
         file_name = 'processed_data/processed_data.csv'
 
     lambda_path = '/tmp/test.csv'
-    bucket_name = os.getenv('output_bucket')
+    bucket_name = 'output_bucket'
     s3 = boto3.resource('s3')   
     bucket = s3.Bucket(bucket_name)
 
@@ -41,11 +47,11 @@ def lambda_handler(event, context):
     # sns to deliver file processed request
     sns = boto3.client('sns')
     response = sns.publish(
-    TopicArn=os.getenv('TopicArn'),
+    TopicArn='TopicArn',
     Message="File {} has been formatted and filtered. Its been stored in {} as {}".format(input_key,bucket_name,file_name)
     )
 
 
 
-#this is code for review -2
+#this is code for review -5
 
