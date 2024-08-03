@@ -10,10 +10,11 @@ load_dotenv()
 
 def lambda_handler(event, context):
     #code added from CI CD 
-    bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
+    input_bucket = event["Records"][0]["s3"]["bucket"]["name"]
     input_key = event["Records"][0]["s3"]["object"]["key"]
     s3 = boto3.client('s3')
-    obj = s3.get_object(Bucket = input_bucket, Key = input_key )
+    obj = s3.get_object(Bucket = input_bucket, Key = input_key)
+
     body = obj['Body'].read()
     json_dicts = body.decode('utf-8').split('\r\n')
     df = pd.DataFrame(columns = ['id','status','amount','date'])
