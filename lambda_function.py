@@ -10,8 +10,8 @@ load_dotenv()
 
 def lambda_handler(event, context):
     #code added from CI CD 
-    input_bucket = event['Records'][0]['s3']['bucket']['name']
-    input_key = event['Records'][0]['s3']['object']['key']
+    bucket_name = event["Records"][0]["s3"]["bucket"]["name"]
+    input_key = event["Records"][0]["s3"]["object"]["key"]
     s3 = boto3.client('s3')
     obj = s3.get_object(Bucket = input_bucket, Key = input_key )
     body = obj['Body'].read()
